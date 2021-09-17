@@ -1,0 +1,20 @@
+# Template PHP Build
+
+# This template allows you to validate your PHP application.
+# The workflow allows running tests and code linting on the default branch.
+
+image: php:7.4
+
+pipelines:
+  branches:
+    staging:
+      - step:
+            name: Deployment To Staging
+            caches:
+              - composer
+            script:
+              - apt-get update
+              - apt-get install openssh-client -y
+              - apt-get install unzip -y
+              - chmod 400 servu_v3_api_staging.pem
+              - ssh -i servu_v3_api_staging.pem ec2-user@ec2-54-157-183-233.compute-1.amazonaws.com 'bash -s' < execute.sh
